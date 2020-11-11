@@ -4,8 +4,8 @@
 
 #include "Catch/single_include/catch2/catch.hpp"
 
-#include "header-only-pca/hopca/read_data.hpp"
-#include "header-only-pca/hopca/types.hpp"
+#include "hopca/read_data.hpp"
+#include "hopca/types.hpp"
 
 std::stringstream make_ss(const std::vector<double>& matrix, const size_t m, const size_t n) {
     std::stringstream ss;
@@ -27,11 +27,11 @@ TEST_CASE("Make sure read_data matches up with known matrix") {
         5 8 10"
     );
 
-    const Matrix res = read_data(3, 3, ss);
+    const pca::Matrix res = pca::read_data(3, 3, ss);
 
     std::vector<double> m{3, 1, 0, 3, 0.5, 7, 5, 8, 10};
 
-    const Matrix known = matrix_from_array(m.data(), 3, 3);
+    const pca::Matrix known = matrix_from_array(m.data(), 3, 3);
 
     REQUIRE(matrix_equal(res, known, 0.000001));
 }
@@ -41,9 +41,9 @@ TEST_CASE("Check that non-square matrices work") {
 
     std::stringstream ss = make_ss(m, 4, 3);
 
-    const Matrix known = matrix_from_array(m.data(), 4, 3);
+    const pca::Matrix known = matrix_from_array(m.data(), 4, 3);
 
-    const Matrix res = read_data(4, 3, ss);
+    const pca::Matrix res = pca::read_data(4, 3, ss);
 
     REQUIRE(matrix_equal(res, known, 0.000001));
 }
