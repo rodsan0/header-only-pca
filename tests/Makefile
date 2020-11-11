@@ -1,17 +1,21 @@
-TEST_NAMES := example
+TEST_NAMES := read_data types pca
 
 TO_ROOT := $(shell git rev-parse --show-cdup)
 
 EMP_DIR := $(TO_ROOT)/third-party/Empirical/include
 
-CXX ?= g++
+CXX ?= clang++
 
-FLAGS = -std=c++17 -pthread -Wall -Wno-unused-function -Wno-unused-private-field -I$(TO_ROOT)/include/ -I$(TO_ROOT)/third-party/ -I$(EMP_DIR)
+FLAGS = -c -std=c++17 -pthread -Wall -Wno-unused-function -Wno-unused-private-field -I$(TO_ROOT)/include/ -I$(TO_ROOT)/third-party/ -I$(EMP_DIR)
 
 default: test
 
-test-%: %.cpp ../third-party/Catch/single_include/catch2/catch.hpp
-	$(CXX) $(FLAGS) $< -o $@.out
+main.o:
+	$(CXX) $(FLAGS) main.cpp -o main.o
+
+test-%: %.cpp main.o ../third-party/Catch/single_include/catch2/catch.hpp
+	$(CXX) $(FLAGS) $< -o $@.o
+	$(CXX) main.o $@.o -o $@.out
 	# execute test
 	./$@.out
 
