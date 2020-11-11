@@ -7,7 +7,7 @@
 #include <functional>
 
 
-#include "../../third-party/linalg/single-include/linalg.hpp"
+#include "../../../third-party/linalg/single-include/linalg.hpp"
 
 
 #include "types.hpp"

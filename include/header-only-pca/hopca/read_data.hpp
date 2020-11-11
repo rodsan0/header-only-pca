@@ -5,9 +5,9 @@
 
 #include <vector>
 
-extern "C" {
-#include "../../third-party/linalg/single-include/linalg.hpp"
-}
+#include "../../../third-party/linalg/single-include/linalg.hpp"
+
+namespace pca {
 
 inline struct matrix* read_data(const size_t m, const size_t n, std::istream& is = std::cin) {
     double temp;
@@ -25,3 +25,5 @@ inline struct matrix* read_data(const size_t m, const size_t n, std::istream& is
 
     return res;
 }
+
+} // namespace pca

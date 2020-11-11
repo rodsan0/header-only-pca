@@ -4,8 +4,8 @@
 
 #include "Catch/single_include/catch2/catch.hpp"
 
-#include "header-only-pca/read_data.hpp"
-#include "header-only-pca/types.hpp"
+#include "header-only-pca/hopca/read_data.hpp"
+#include "header-only-pca/hopca/types.hpp"
 
 std::stringstream make_ss(const std::vector<double>& matrix, const size_t m, const size_t n) {
     std::stringstream ss;

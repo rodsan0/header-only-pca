@@ -4,9 +4,9 @@
 
 #include "Catch/single_include/catch2/catch.hpp"
 
-#include "header-only-pca/read_data.hpp"
-#include "header-only-pca/types.hpp"
-#include "header-only-pca/pca.hpp"
+#include "header-only-pca/hopca/read_data.hpp"
+#include "header-only-pca/hopca/types.hpp"
+#include "header-only-pca/hopca/pca.hpp"
 
 TEST_CASE("Test pca::get_covariance") {
     SECTION("...with the 3-identity") {
