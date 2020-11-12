@@ -27,13 +27,13 @@ TEST_CASE("Make sure read_data matches up with known matrix") {
         5 8 10"
     );
 
-    const pca::Matrix res = pca::read_data(3, 3, ss);
+    const hopca::Matrix res = hopca::read_data(3, 3, ss);
 
     std::vector<double> m{3, 1, 0, 3, 0.5, 7, 5, 8, 10};
 
-    const pca::Matrix known = matrix_from_array(m.data(), 3, 3);
+    const hopca::Matrix known = hola::matrix_from_array(m.data(), 3, 3);
 
-    REQUIRE(matrix_equal(res, known, 0.000001));
+    REQUIRE(hola::matrix_equal(res, known, 0.000001));
 }
 
 TEST_CASE("Check that non-square matrices work") {
@@ -41,9 +41,9 @@ TEST_CASE("Check that non-square matrices work") {
 
     std::stringstream ss = make_ss(m, 4, 3);
 
-    const pca::Matrix known = matrix_from_array(m.data(), 4, 3);
+    const hopca::Matrix known = hola::matrix_from_array(m.data(), 4, 3);
 
-    const pca::Matrix res = pca::read_data(4, 3, ss);
+    const hopca::Matrix res = hopca::read_data(4, 3, ss);
 
-    REQUIRE(matrix_equal(res, known, 0.000001));
+    REQUIRE(hola::matrix_equal(res, known, 0.000001));
 }

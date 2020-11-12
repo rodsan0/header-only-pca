@@ -13,10 +13,10 @@
 #include "types.hpp"
 #include "eigenmap.hpp"
 
-namespace pca {
+namespace hopca {
 
-inline Matrix get_covariance(const Matrix m) {
-    Matrix ret = matrix_multiply_MtN(m, m);
+inline hopca::Matrix get_covariance(const hopca::Matrix m) {
+    hopca::Matrix ret = hola::matrix_multiply_MtN(m, m);
 
     std::transform(
         DATA(ret),
@@ -30,7 +30,7 @@ inline Matrix get_covariance(const Matrix m) {
     return ret;
 }
 
-inline double get_mean(const Vector v) {
+inline double get_mean(const hopca::Vector v) {
     const size_t len = v->length;
     double sum = 0;
 
@@ -58,40 +58,41 @@ public:
     { ; }
 
 private:
-    Matrix normalize(Matrix m) const;
+    hopca::Matrix normalize(hopca::Matrix m) const;
 public:
     void setNComponents(const size_t n) { n_components = n; }
     void setTolerance(const double d) { tolerance = d; }
     void setMaxIter(const size_t n) { max_iter = n; }
 
-    Matrix doPCANoNormalize(Matrix m) const;
-    Matrix doPCA(Matrix m) const;
+    hopca::Matrix doPCANoNormalize(hopca::Matrix m) const;
+    hopca::Matrix doPCA(hopca::Matrix m) const;
 };
 
-Matrix PCA::normalize(Matrix m) const {
+hopca::Matrix PCA::normalize(hopca::Matrix m) const {
     const size_t rows = m->n_row;
     const size_t cols = m->n_col;
 
-    Matrix temp = matrix_new(rows, cols);
+    hopca::Matrix temp = hola::matrix_new(rows, cols);
     assert(temp != nullptr);
 
     for (size_t col = 0; col < cols; ++col) {
-        Vector vec = matrix_column_copy(m, col);
+        hopca::Vector vec = hola::matrix_column_copy(m, col);
 
-        const Vector mean_vector = vector_constant(cols, get_mean(vec));
-        vector_subtract_into(vec, vec, mean_vector);
+        const hopca::Vector mean_vector
+          = hola::vector_constant(cols, get_mean(vec));
+        hola::vector_subtract_into(vec, vec, mean_vector);
 
-        const double norm_squared = vector_dot_product(vec, vec);
+        const double norm_squared = hola::vector_dot_product(vec, vec);
         const double invstdev = std::sqrt(rows / norm_squared);
 
-        vector_scalar_multiply_into(vec, vec, invstdev);
+        hola::vector_scalar_multiply_into(vec, vec, invstdev);
 
-        matrix_copy_vector_into_column(temp, vec, col);
+        hola::matrix_copy_vector_into_column(temp, vec, col);
     }
     return temp;
 }
 
-Matrix PCA::doPCANoNormalize(Matrix m) const {
+hopca::Matrix PCA::doPCANoNormalize(hopca::Matrix m) const {
 
     // find opposite of matrix
     std::transform(
@@ -103,20 +104,20 @@ Matrix PCA::doPCANoNormalize(Matrix m) const {
         }
     );
 
-    const Matrix cov = get_covariance(m);
+    const hopca::Matrix cov = get_covariance(m);
 
-    const Eigen eig = eigen_solve(cov, tolerance, max_iter);
+    const hopca::Eigen eig = hola::eigen_solve(cov, tolerance, max_iter);
 
     // map of eigenvalues to eigenvectors
-    Eigenmap eigenmap(eig);
+    hopca::Eigenmap eigenmap(eig);
     eigenmap.trim(n_components);
 
-    return matrix_multiply(m, eigenmap.get_matrix());
+    return hola::matrix_multiply(m, eigenmap.get_matrix());
 }
 
-Matrix PCA::doPCA(Matrix m) const {
-    const Matrix normalized = normalize(m);
+hopca::Matrix PCA::doPCA(hopca::Matrix m) const {
+    const hopca::Matrix normalized = normalize(m);
     return doPCANoNormalize(normalized);
 }
 
-} // namespace pca
+} // namespace hopca

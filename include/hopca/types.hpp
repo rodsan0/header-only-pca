@@ -1,14 +1,8 @@
-#ifndef PCA_TYPES
-#define PCA_TYPES
+#ifndef HOPCA_TYPES
+#define HOPCA_TYPES
 
-#include "../../third-party/linalg/single-include/linalg.hpp"
-
-namespace pca {
-
-using Matrix = struct matrix*;
-using Vector = struct vector*;
-using Eigen = struct eigen*;
-
-} // namespace pca
+#include "types/Eigen.hpp"
+#include "types/Matrix.hpp"
+#include "types/Vector.hpp"
 
 #endif

@@ -4,15 +4,16 @@
 
 #include "Catch/single_include/catch2/catch.hpp"
 
-#include "header-only-pca/hopca/read_data.hpp"
-#include "header-only-pca/hopca/types.hpp"
-#include "header-only-pca/hopca/pca.hpp"
+#include "hopca/read_data.hpp"
+#include "hopca/types.hpp"
+#include "hopca/pca.hpp"
 
-TEST_CASE("Test pca::get_covariance") {
+TEST_CASE("Test hopca::get_covariance") {
+
     SECTION("...with the 3-identity") {
-        pca::Matrix id = matrix_identity(3);
+        hopca::Matrix id = hola::matrix_identity(3);
 
-        pca::Matrix cov = pca::get_covariance(id);
+        hopca::Matrix cov = hopca::get_covariance(id);
 
         std::vector<double> v{
             1./3, 0, 0,
@@ -20,14 +21,14 @@ TEST_CASE("Test pca::get_covariance") {
             0, 0, 1./3
         };
 
-        pca::Matrix res = matrix_from_array(v.data(), 3, 3);
+        hopca::Matrix res = hola::matrix_from_array(v.data(), 3, 3);
 
-        REQUIRE(matrix_equal(res, cov, 0.001));
+        REQUIRE(hola::matrix_equal(res, cov, 0.001));
     }
     SECTION("...with the 100-identity") {
-        pca::Matrix id = matrix_identity(100);
+        hopca::Matrix id = hola::matrix_identity(100);
 
-        pca::Matrix cov = pca::get_covariance(id);
+        hopca::Matrix cov = hopca::get_covariance(id);
 
         std::vector<double> v(100 * 100, 0);
 
@@ -35,18 +36,19 @@ TEST_CASE("Test pca::get_covariance") {
             v[100*i + i] = 1./100;
         }
 
-        pca::Matrix res = matrix_from_array(v.data(), 100, 100);
+        hopca::Matrix res = hola::matrix_from_array(v.data(), 100, 100);
 
-        REQUIRE(matrix_equal(res, cov, 0.0001));
+        REQUIRE(hola::matrix_equal(res, cov, 0.0001));
     }
 }
 
-TEST_CASE("Test pca::get_mean ") {
+TEST_CASE("Test hopca::get_mean ") {
     SECTION("...with a trivial case") {
         std::vector<double> v(1, 1);
-        pca::Vector a = vector_from_array(v.data(), 1);
+        hopca::Vector a = hola::vector_from_array(v.data(), 1);
 
-        REQUIRE(pca::get_mean (a) == 1.);
+        REQUIRE(hopca::get_mean (a) == 1.);
+
     }
     SECTION("...with a simple case") {
         std::vector<double> v(5);
@@ -55,10 +57,10 @@ TEST_CASE("Test pca::get_mean ") {
             v.end(),
             1
         );
-        pca::Vector a = vector_from_array(v.data(), 5);
+        hopca::Vector a = hola::vector_from_array(v.data(), 5);
 
         // the mean of {1, 2, 3, 4, 5} is clearly 3
-        REQUIRE(pca::get_mean (a) == 3.);
+        REQUIRE(hopca::get_mean (a) == 3.);
     }
     SECTION("...with a simple, yet long, case") {
         std::vector<double> v(1000);
@@ -67,24 +69,24 @@ TEST_CASE("Test pca::get_mean ") {
             v.end(),
             1
         );
-        pca::Vector a = vector_from_array(v.data(), 1000);
+        hopca::Vector a = hola::vector_from_array(v.data(), 1000);
 
         // the sum of {1, 2, ..., 1000} is 500500
         // so the mean is 500500 / 1000 = 500.5
-        REQUIRE(pca::get_mean (a) == 500.5);
+        REQUIRE(hopca::get_mean (a) == 500.5);
     }
-    SECTION("...with a small pca::Vector of integer values") {
+    SECTION("...with a small hopca::Vector of integer values") {
         std::vector<double> v{1, 2, 6, 4, 7, 32, 345, 67, 234, 234};
-        pca::Vector a = vector_from_array(v.data(), v.size());
+        hopca::Vector a = hola::vector_from_array(v.data(), v.size());
 
-        REQUIRE(pca::get_mean (a) == 93.2);
+        REQUIRE(hopca::get_mean (a) == 93.2);
     }
-    SECTION("...with a small pca::Vector of decimals") {
+    SECTION("...with a small hopca::Vector of decimals") {
         std::vector<double> v{1.3, 23.1, -2.6, 3.235, 7.54, 314.2, 0.33332, 1.32, 2};
-        pca::Vector a = vector_from_array(v.data(), v.size());
+        hopca::Vector a = hola::vector_from_array(v.data(), v.size());
 
         using namespace Catch::literals;
-        REQUIRE(pca::get_mean (a) == 38.9365_a);
+        REQUIRE(hopca::get_mean (a) == 38.9365_a);
     }
 }
 
@@ -96,11 +98,11 @@ TEST_CASE("Test PCA") {
         6, 5, 9
     };
 
-    pca::Matrix v_m = matrix_from_array(v.data(), 3, 3);
+    hopca::Matrix v_m = hola::matrix_from_array(v.data(), 3, 3);
 
-    pca::PCA pca(3);
+    hopca::PCA pca(3);
 
-    pca::Matrix res = pca.doPCA(v_m);
+    hopca::Matrix res = pca.doPCA(v_m);
 
     // from Python's sklearn
     std::vector<double> expected{
@@ -125,11 +127,11 @@ TEST_CASE("Test PCA") {
         2, 6, 9, 2
     };
 
-    pca::Matrix v_m = matrix_from_array(v.data(), 4, 4);
+    hopca::Matrix v_m = hola::matrix_from_array(v.data(), 4, 4);
 
-    pca::PCA pca(3);
+    hopca::PCA pca(3);
 
-    pca::Matrix res = pca.doPCA(v_m);
+    hopca::Matrix res = pca.doPCA(v_m);
 
     // from Python's sklearn
     std::vector<double> expected{

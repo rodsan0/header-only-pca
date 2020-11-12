@@ -2,14 +2,17 @@
 
 #include <iostream>
 #include <sstream>
-
 #include <vector>
 
 #include "../../third-party/linalg/single-include/linalg.hpp"
 
-namespace pca {
+#include "types.hpp"
 
-inline struct matrix* read_data(const size_t m, const size_t n, std::istream& is = std::cin) {
+namespace hopca {
+
+inline hopca::Matrix read_data(
+  const size_t m, const size_t n, std::istream& is = std::cin
+) {
     double temp;
 
     std::vector<double> D;
@@ -21,9 +24,7 @@ inline struct matrix* read_data(const size_t m, const size_t n, std::istream& is
         }
     }
 
-    struct matrix* res = matrix_from_array(D.data(), m, n);
-
-    return res;
+    return hola::matrix_from_array(D.data(), m, n);
 }
 
-} // namespace pca
+} // namespace hopca
