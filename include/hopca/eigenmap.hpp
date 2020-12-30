@@ -24,7 +24,7 @@ public:
     : rows(eigen->eigenvectors->n_row)
     , cols(eigen->eigenvectors->n_col)
     {
-        for (size_t i = 0; i < eigen->n; ++i) {
+        for (int i = 0; i < eigen->n; ++i) {
             const double val = VECTOR_IDX_INTO(eigen->eigenvalues, i);
             const hopca::Vector vect
               = hola::matrix_column_copy(eigen->eigenvectors, i);
