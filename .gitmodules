@@ -10,4 +10,4 @@
 	url = https://github.com/emscripten-core/emsdk.git
 [submodule "third-party/linalg"]
 	path = third-party/linalg
-	url = git@github.com:rodsan0/linalg.git
+	url = https://github.com/rodsan0/linalg.git
